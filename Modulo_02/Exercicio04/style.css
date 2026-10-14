@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+}
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+/* Menu de Navegação */
+nav {
+    margin-bottom: 20px;
+}
+nav a {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-right: 15px;
+}
+nav a:hover {
+    text-decoration: underline;
+}
+/*Troca de Telas Via CSS*/
+
+
+/*Tabela*/
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 100px;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #007bff;
+    color: white;
+}
