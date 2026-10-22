@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Desafios - Mercadinho Seu Zé</title>
+  <style>
+    /* =========================================================================
+       ESTILOS VISUAIS DA PÁGINA DO PAINEL (DARK THEME PROFISSIONAL)
+       ========================================================================= */
+    :root {
+      --bg-principal: #0f172a;
+      --bg-card: #1e293b;
+      --bg-codigo: #090d16;
+      --verde-destaque: #22c55e;
+      --amarelo-destaque: #eab308;
+      --vermelho-destaque: #ef4444;
+      --azul-destaque: #38bdf8;
+      --texto-claro: #f8fafc;
+      --texto-suave: #94a3b8;
+      --borda: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-principal);
+      color: var(--texto-claro);
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* CABEÇALHO DA EMPRESA */
+    header {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 1px solid var(--borda);
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 25px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    }
+
+    .badge-cargo {
+      background-color: var(--verde-destaque);
+      color: #000;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    header h1 {
+      color: var(--azul-destaque);
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      color: var(--texto-suave);
+      font-size: 0.95rem;
+    }
+
+    /* ASCII BANNER */
+    .terminal-banner {
+      background-color: var(--bg-codigo);
+      color: var(--verde-destaque);
+      font-family: 'Consolas', 'Courier New', monospace;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--borda);
+      font-size: 0.8rem;
+      white-space: pre;
+      overflow-x: auto;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    /* BARRA DE PROGRESSO DO ALUNO */
+    .progress-box {
+      background: var(--bg-card);
+      padding: 18px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      border: 1px solid var(--borda);
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar-bg {
+      background: var(--bg-codigo);
+      height: 14px;
+      border-radius: 7px;
+      overflow: hidden;
+      border: 1px solid var(--borda);
+    }
+
+    .progress-bar-fill {
+      background: linear-gradient(90deg, var(--azul-destaque), var(--verde-destaque));
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    /* MENU RÁPIDO DE NAVEGAÇÃO INTERNA */
+    .nav-atalhos {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .nav-atalhos a {
+      flex: 1;
+      text-align: center;
+      background: var(--bg-card);
+      color: var(--texto-claro);
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      border: 1px solid var(--borda);
+      font-size: 0.85rem;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+
+    .nav-atalhos a:hover {
+      border-color: var(--azul-destaque);
+      color: var(--azul-destaque);
+    }
+
+    /* SEÇÕES DE DESAFIOS */
+    .modulo-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--borda);
+      padding-bottom: 8px;
+    }
+
+    .modulo-header h2 {
+      font-size: 1.3rem;
+    }
+
+    .modulo-header .tag-status {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .tag-index { background-color: rgba(34, 197, 94, 0.2); color: var(--verde-destaque); border: 1px solid var(--verde-destaque); }
+    .tag-produtos { background-color: rgba(234, 179, 8, 0.2); color: var(--amarelo-destaque); border: 1px solid var(--amarelo-destaque); }
+    .tag-cadastro { background-color: rgba(239, 68, 68, 0.2); color: var(--vermelho-destaque); border: 1px solid var(--vermelho-destaque); }
+    .tag-css { background-color: rgba(56, 189, 248, 0.2); color: var(--azul-destaque); border: 1px solid var(--azul-destaque); }
+
+    /* LISTA DE CARDS DE DESAFIOS */
+    .desafios-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .card-desafio {
+      background-color: var(--bg-card);
+      border: 1px solid var(--borda);
+      border-left: 4px solid var(--borda);
+      border-radius: 8px;
+      padding: 15px 18px;
+      transition: all 0.3s;
+    }
+
+    .card-desafio.concluido {
+      border-left-color: var(--verde-destaque);
+      opacity: 0.85;
+    }
+
+    .desafio-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .desafio-numero {
+      font-weight: bold;
+      font-size: 0.95rem;
+      color: var(--azul-destaque);
+    }
+
+    .desafio-tag {
+      font-size: 0.75rem;
+      background: var(--bg-codigo);
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: var(--texto-suave);
+      border: 1px solid var(--borda);
+    }
+
+    .desafio-texto {
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      margin-bottom: 10px;
+    }
+
+    /* CHECKBOX CUSTOMIZADO */
+    .check-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--verde-destaque);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .check-box input {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: var(--verde-destaque);
+    }
+
+    /* CAIXA DE DICAS */
+    .dica-box {
+      background: var(--bg-codigo);
+      border: 1px dashed var(--borda);
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: var(--texto-suave);
+    }
+
+    code {
+      color: var(--azul-destaque);
+      font-family: 'Consolas', monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- CABEÇALHO INSTITUCIONAL -->
+    <header>
+      <span class="badge-cargo">👨‍💻 Rotina de Desenvolvedor Front-End Júnior</span>
+      <h1>Painel de Desafios: Mercadinho Seu Zé</h1>
+      <p>Nesta atividade, você assume o papel de desenvolvedor contratado para aprimorar o sistema da empresa utilizando apenas HTML5 e CSS3 puro.</p>
+
+      <div class="terminal-banner">
++-------------------------------------------------------------------------------+
+|                      MERCADINHO SEU ZÉ - DESAFIOS DE TI                       |
+|           Guia de Tarefas do Desenvolvedor: HTML5 + CSS3 (Sem JS)             |
++-------------------------------------------------------------------------------+
+      </div>
+    </header>
+
+    <!-- BARRA DE PROGRESSO GERAL -->
+    <div class="progress-box">
+      <div class="progress-info">
+        <span>Seu Progresso de Desenvolvimento</span>
+        <span id="progressText">0 / 35 Desafios Concluídos (0%)</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+    </div>
+
+    <!-- MENU DE NAVEGAÇÃO RÁPIDA -->
+    <div class="nav-atalhos">
+      <a href="#sec-index">🟢 index.html (10)</a>
+      <a href="#sec-produtos">🟡 produtos.html (10)</a>
+      <a href="#sec-cadastro">🔴 cadastro.html (10)</a>
+      <a href="#sec-css">🎨 style.css (5)</a>
+    </div>
+
+    <!-- =========================================================================
+         MÓDULO 1: INDEX.HTML
+         ========================================================================= -->
+    <section id="sec-index">
+      <div class="modulo-header">
+        <h2>🟢 Página 1: index.html</h2>
+        <span class="tag-status tag-index">Tela de Boas-Vindas</span>
+      </div>
+      <p style="color: var(--texto-suave); font-size: 0.85rem; margin-bottom: 15px;">
+        Foco: Navegação, hierarquia semântica e apresentação corporativa.
+      </p>
+
+      <div class="desafios-grid">
+
+        <div class="card-desafio" id="c-idx-1">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 01</span>
+            <span class="desafio-tag">Navegação</span>
+          </div>
+          <div class="desafio-texto">Adicione um atributo <code>title="Página Inicial"</code> ao link do menu de início no arquivo <code>index.html</code>.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-idx-1', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-idx-2">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 02</span>
+            <span class="desafio-tag">Acessibilidade</span>
+          </div>
+          <div class="desafio-texto">Insira o parâmetro <code>lang="pt-BR"</code> corretamente no elemento <code>&lt;html&gt;</code> e declare o <code>charset="UTF-8"</code> na tag head.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-idx-2', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-idx-3">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 03</span>
+            <span class="desafio-tag">Semântica</span>
+          </div>
+          <div class="desafio-texto">Substitua a tag <code>&lt;div&gt;</code> principal que envolve o conteúdo por uma tag semântica <code>&lt;main&gt;</code>.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-idx-3', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-idx-4">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 04</span>
+            <span class="desafio-tag">Layout/CSS</span>
+          </div>
+          <div class="desafio-texto">Crie um card com cor de fundo diferenciada chamando atenção para o horário de funcionamento da loja.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-idx-4', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-idx-5">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 05</span>
+            <span class="desafio-tag">Boas Práticas</span>
+          </div>
+          <div class="desafio-texto">Adicione uma mensagem de alerta no topo informando que o sistema é de "Uso Exclusivo de Funcionários".</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-idx-5', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-idx-6">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 06</span>
+            <span class="desafio-tag">Imagens/CSS</span>
+          </div>
+          <div class="desafio-texto">Adicione uma imagem estilizada da logomarca da empresa usando caminhos relativos (ex: <code>src="img/logo.png"</code>).</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-idx-6', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-idx-7">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 07</span>
+            <span class="desafio-tag">Links Externos</span>
+          </div>
+          <div class="desafio-texto">Adicione um link no rodapé (<code>&lt;footer&gt;</code>) direcionando para o site institucional do sistema ERP parceiro.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-idx-7', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-idx-8">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 08</span>
+            <span class="desafio-tag">Estilização</span>
+          </div>
+          <div class="desafio-texto">Use pseudo-classes CSS (<code>nav a:hover</code>) para alterar o ponteiro do mouse e a cor dos botões de navegação ao passar o cursor.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-idx-8', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-idx-9">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 09</span>
+            <span class="desafio-tag">Organização</span>
+          </div>
+          <div class="desafio-texto">Crie uma seção com 3 cards lado a lado usando CSS Flexbox exibindo atalhos rápidos do sistema.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-idx-9', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-idx-10">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 10</span>
+            <span class="desafio-tag">Meta Tags</span>
+          </div>
+          <div class="desafio-texto">Inclua uma meta tag <code>viewport</code> configurada corretamente para compatibilidade com dispositivos móveis.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-idx-10', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         MÓDULO 2: PRODUTOS.HTML
+         ========================================================================= -->
+    <section id="sec-produtos">
+      <div class="modulo-header">
+        <h2>🟡 Página 2: produtos.html</h2>
+        <span class="tag-status tag-produtos">Tabela de Estoque</span>
+      </div>
+      <p style="color: var(--texto-suave); font-size: 0.85rem; margin-bottom: 15px;">
+        Foco: Estruturação, manipulação visual e exibição de dados corporativos.
+      </p>
+
+      <div class="desafios-grid">
+
+        <div class="card-desafio" id="c-prd-1">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 01</span>
+            <span class="desafio-tag">Tabelas Semânticas</span>
+          </div>
+          <div class="desafio-texto">Agrupe as linhas da tabela utilizando estritamente as tags <code>&lt;thead&gt;</code>, <code>&lt;tbody&gt;</code> e <code>&lt;tfoot&gt;</code>.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-prd-1', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-prd-2">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 02</span>
+            <span class="desafio-tag">Mesclagem</span>
+          </div>
+          <div class="desafio-texto">Na linha de totalizador do <code>&lt;tfoot&gt;</code>, use a propriedade <code>colspan</code> para mesclar 4 colunas consecutivas.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-prd-2', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-prd-3">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 03</span>
+            <span class="desafio-tag">Indicadores Visuais</span>
+          </div>
+          <div class="desafio-texto">Adicione uma nova coluna chamada <strong>Corredor/Setor</strong> e classifique os produtos por local físico da loja.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-prd-3', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-prd-4">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 04</span>
+            <span class="desafio-tag">CSS Pseudo-Classes</span>
+          </div>
+          <div class="desafio-texto">Aplique o efeito de linhas zebradas em todas as linhas pares da tabela usando <code>tbody tr:nth-child(even)</code>.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-prd-4', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-prd-5">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 05</span>
+            <span class="desafio-tag">Destaque Visual</span>
+          </div>
+          <div class="desafio-texto">Aplique o efeito <code>tr:hover</code> para destacar a linha inteira sobre a qual o ponteiro do mouse estiver posicionado.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-prd-5', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-prd-6">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 06</span>
+            <span class="desafio-tag">Badges de Status</span>
+          </div>
+          <div class="desafio-texto">Crie 3 classes CSS para etiquetar os produtos (<code>.badge-verde</code>, <code>.badge-amarelo</code>, <code>.badge-vermelho</code>).</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-prd-6', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-prd-7">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 07</span>
+            <span class="desafio-tag">Alinhamento de Dados</span>
+          </div>
+          <div class="desafio-texto">Ajuste o alinhamento do texto para a esquerda no nome do produto e para a direita nas colunas numéricas de Preço e Quantidade.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-prd-7', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-prd-8">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 08</span>
+            <span class="desafio-tag">Inclusão de Registros</span>
+          </div>
+          <div class="desafio-texto">Adicione manualmente mais 3 produtos na tabela com dados realistas do mercadinho.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-prd-8', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-prd-9">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 09</span>
+            <span class="desafio-tag">Links Rápidos</span>
+          </div>
+          <div class="desafio-texto">Insira uma coluna de <strong>Ações</strong> na tabela contendo links estáticos chamados "Editar" e "Excluir".</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-prd-9', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-prd-10">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 10</span>
+            <span class="desafio-tag">Scroll Responsivo</span>
+          </div>
+          <div class="desafio-texto">Envolva a tabela em uma div com classe <code>.tabela-container</code> para permitir rolagem horizontal em telas pequenas.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-prd-10', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         MÓDULO 3: CADASTRO.HTML
+         ========================================================================= -->
+    <section id="sec-cadastro">
+      <div class="modulo-header">
+        <h2>🔴 Página 3: cadastro.html</h2>
+        <span class="tag-status tag-cadastro">Formulário de Entrada</span>
+      </div>
+      <p style="color: var(--texto-suave); font-size: 0.85rem; margin-bottom: 15px;">
+        Foco: Validação nativa, entrada de dados e formulários corporativos.
+      </p>
+
+      <div class="desafios-grid">
+
+        <div class="card-desafio" id="c-cad-1">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 01</span>
+            <span class="desafio-tag">Organização</span>
+          </div>
+          <div class="desafio-texto">Agrupe os campos do formulário em dois blocos lógicos usando as tags <code>&lt;fieldset&gt;</code> e <code>&lt;legend&gt;</code>.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-cad-1', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-cad-2">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 02</span>
+            <span class="desafio-tag">Validação Nativa</span>
+          </div>
+          <div class="desafio-texto">Adicione o atributo <code>required</code> em todos os campos obrigatórios para impedir envios vazios.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-cad-2', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-cad-3">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 03</span>
+            <span class="desafio-tag">Tipagem de Inputs</span>
+          </div>
+          <div class="desafio-texto">Garanta que os campos de Preço usem <code>type="number"</code> com suporte a decimais via <code>step="0.01"</code>.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-cad-3', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-cad-4">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 04</span>
+            <span class="desafio-tag">Campos de Seleção</span>
+          </div>
+          <div class="desafio-texto">Insira um campo do tipo <code>&lt;select&gt;</code> para escolher o fornecedor do produto.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-cad-4', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-cad-5">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 05</span>
+            <span class="desafio-tag">Feedback Visual</span>
+          </div>
+          <div class="desafio-texto">Estilize o evento <code>input:focus</code> no CSS para destacar o campo ativo com uma borda verde brilhante.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-cad-5', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-cad-6">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 06</span>
+            <span class="desafio-tag">Layouts com Flexbox</span>
+          </div>
+          <div class="desafio-texto">Alinhe o Preço e a Quantidade lado a lado em duas colunas usando <code>display: flex</code>.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-cad-6', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-cad-7">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 07</span>
+            <span class="desafio-tag">Controle de Datas</span>
+          </div>
+          <div class="desafio-texto">Adicione um campo de entrada do tipo <code>date</code> para a data de fabricação e validade do produto.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-cad-7', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-cad-8">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 08</span>
+            <span class="desafio-tag">Checkboxes</span>
+          </div>
+          <div class="desafio-texto">Adicione um grupo de caixas de seleção (<code>checkbox</code>) para indicar se o produto é Perecível ou Importado.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-cad-8', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-cad-9">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 09</span>
+            <span class="desafio-tag">Atributo Placeholder</span>
+          </div>
+          <div class="desafio-texto">Inclua dicas de preenchimento (<code>placeholder</code>) intuitivas em todos os campos de texto.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-cad-9', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-cad-10">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 10</span>
+            <span class="desafio-tag">Ação do Formulário</span>
+          </div>
+          <div class="desafio-texto">Configure o atributo <code>action="produtos.html"</code> para simular o redirecionamento após a gravação dos dados.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-cad-10', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         MÓDULO 4: STYLE.CSS
+         ========================================================================= -->
+    <section id="sec-css">
+      <div class="modulo-header">
+        <h2>🎨 CSS Geral: style.css</h2>
+        <span class="tag-status tag-css">Estilização Corporativa</span>
+      </div>
+      <p style="color: var(--texto-suave); font-size: 0.85rem; margin-bottom: 15px;">
+        Foco: Padronização visual, variáveis, resetação e suporte responsivo.
+      </p>
+
+      <div class="desafios-grid">
+
+        <div class="card-desafio" id="c-css-1">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 01</span>
+            <span class="desafio-tag">Resets CSS</span>
+          </div>
+          <div class="desafio-texto">Crie uma regra universal <code>*</code> removendo as margens e paddings padrão de todos os elementos.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-css-1', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-css-2">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 02</span>
+            <span class="desafio-tag">Padronização Visual</span>
+          </div>
+          <div class="desafio-texto">Defina uma paleta de cores corporativa utilizando variáveis CSS (<code>:root</code>).</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-css-2', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-css-3">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 03</span>
+            <span class="desafio-tag">Responsividade</span>
+          </div>
+          <div class="desafio-texto">Use <code>@media (max-width: 768px)</code> para transformar a navegação e o formulário em coluna única em celulares.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-css-3', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-css-4">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 04</span>
+            <span class="desafio-tag">Tipografia</span>
+          </div>
+          <div class="desafio-texto">Defina uma família de fontes limpa (<code>Arial, sans-serif</code>) com altura de linha espaçada para fácil leitura.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-css-4', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+        <div class="card-desafio" id="c-css-5">
+          <div class="desafio-header">
+            <span class="desafio-numero">Desafio 05</span>
+            <span class="desafio-tag">Sombreamento</span>
+          </div>
+          <div class="desafio-texto">Aplique sombras sutis (<code>box-shadow</code>) nos cards e na tabela para passar uma impressão moderna.</div>
+          <label class="check-box"><input type="checkbox" onchange="marcar('c-css-5', this.checked)"> Concluí a Tarefa</label>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // LÓGICA DO PAINEL DE PROGRESSO
+    let concluidos = 0;
+    const TOTAL_DESAFIOS = 35;
+
+    function marcar(cardId, isChecked) {
+      const card = document.getElementById(cardId);
+      
+      if (isChecked) {
+        card.classList.add('concluido');
+        concluidos++;
+      } else {
+        card.classList.remove('concluido');
+        concluidos--;
+      }
+
+      const porcentagem = Math.round((concluidos / TOTAL_DESAFIOS) * 100);
+      document.getElementById('progressBar').style.width = porcentagem + '%';
+      document.getElementById('progressText').textContent = 
+        `${concluidos} / ${TOTAL_DESAFIOS} Desafios Concluídos (${porcentagem}%)`;
+    }
+  </script>
+</body>
+</html>

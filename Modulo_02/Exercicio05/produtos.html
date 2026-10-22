@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mercadinho Seu Zé - Gestão de Estoque</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>🛒 Mercadinho Seu Zé - Sistema ERP</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="produtos.html">Estoque de Produtos</a>
+    <a href="cadastro.html">Cadastrar Produto</a>
+  </nav>
+
+  <main class="conteudo">
+    <h2>📋 Tabela de Produtos Cadastrados</h2>
+
+    <div class="tabela-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Cód.</th>
+            <th>Produto</th>
+            <th>Setor</th>
+            <th>Categoria</th>
+            <th class="text-right">Preço Un.</th>
+            <th class="text-right">Qtd.</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>001</td>
+            <td>Arroz Tipo 1 - 5kg</td>
+            <td>Corredor A1</td>
+            <td>Alimentos</td>
+            <td class="text-right">R$ 24,90</td>
+            <td class="text-right">30</td>
+            <td><span class="badge badge-verde">Disponível</span></td>
+            <td><a href="#">Editar</a> | <a href="#">Excluir</a></td>
+          </tr>
+          <tr>
+            <td>002</td>
+            <td>Feijão Carioca 1kg</td>
+            <td>Corredor A1</td>
+            <td>Alimentos</td>
+            <td class="text-right">R$ 7,50</td>
+            <td class="text-right">5</td>
+            <td><span class="badge badge-amarelo">Estoque Baixo</span></td>
+            <td><a href="#">Editar</a> | <a href="#">Excluir</a></td>
+          </tr>
+          <tr>
+            <td>003</td>
+            <td>Leite Integral 1L</td>
+            <td>Geladeira 02</td>
+            <td>Laticínios</td>
+            <td class="text-right">R$ 4,80</td>
+            <td class="text-right">0</td>
+            <td><span class="badge badge-vermelho">Esgotado</span></td>
+            <td><a href="#">Editar</a> | <a href="#">Excluir</a></td>
+          </tr>
+          <tr>
+            <td>004</td>
+            <td>Detergente Neutro 500ml</td>
+            <td>Corredor B3</td>
+            <td>Limpeza</td>
+            <td class="text-right">R$ 2,20</td>
+            <td class="text-right">48</td>
+            <td><span class="badge badge-verde">Disponível</span></td>
+            <td><a href="#">Editar</a> | <a href="#">Excluir</a></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5">Total de Registros Listados:</td>
+            <td colspan="3">83 Unidades no Total</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,240 @@
+/* =========================================================================
+   SISTEMA DE GESTÃO CORPORATIVA - MERCADINHO SEU ZÉ
+   ========================================================================= */
+
+/* VARIÁVEIS DE CORES CORPORATIVAS */
+:root {
+  --verde-principal: #16a34a;
+  --verde-escuro: #15803d;
+  --cor-fundo: #f8fafc;
+  --cor-card: #ffffff;
+  --cor-texto: #1e293b;
+  --cor-borda: #cbd5e1;
+}
+
+/* RESET REGRAS GERAIS */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  padding: 20px;
+  line-height: 1.5;
+}
+.aviso-uso {
+  background-color: #fef3c7;
+  color: #78350f;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border: 1px solid #fcd34d;
+}
+
+
+/* CABEÇALHO DA EMPRESA */
+header {
+  background-color: var(--verde-principal);
+  color: white;
+  padding: 18px 24px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* NAV - BARRA DE NAVEGAÇÃO */
+nav {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+nav a {
+  background-color: var(--verde-principal);
+  color: white;
+  padding: 10px 16px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+nav a:hover {
+  background-color: var(--verde-escuro);
+}
+
+/* ESTRUTURA DOS CONTAINERS */
+.conteudo {
+  background: var(--cor-card);
+  padding: 25px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--cor-borda);
+}
+
+h2 {
+  color: var(--verde-principal);
+  margin-bottom: 15px;
+  font-size: 1.3rem;
+  border-bottom: 2px solid var(--cor-fundo);
+  padding-bottom: 8px;
+}
+h3 {
+  color: var(--verde-principal);
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+/* CARDS DA TELA INICIAL (INDEX) */
+.painel-atalhos {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.card-atalho {
+  flex: 1;
+  background-color: #f1f5f9;
+  border: 1px solid var(--cor-borda);
+  padding: 15px;
+  border-radius: 6px;
+}
+.card-Horario {
+  flex: 1;
+  background-color: #49515a;
+  border: 1px solid var(--cor-borda);
+  padding: 15px;
+  border-radius: 6px;
+}
+
+
+
+/* TABELA DE DADOS (PRODUTOS) */
+.tabela-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  border: 1px solid var(--cor-borda);
+  padding: 10px 12px;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+th {
+  background-color: var(--verde-principal);
+  color: white;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f8fafc;
+}
+
+tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+tfoot td {
+  background-color: #f1f5f9;
+  font-weight: bold;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* ETIQUETAS DE STATUS (BADGES) */
+.badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.badge-verde { background-color: #dcfce7; color: #166534; }
+.badge-amarelo { background-color: #fef9c3; color: #854d0e; }
+.badge-vermelho { background-color: #fee2e2; color: #991b1b; }
+
+/* FORMULÁRIO (CADASTRO) */
+fieldset {
+  border: 1px solid var(--cor-borda);
+  padding: 18px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+legend {
+  font-weight: bold;
+  color: var(--verde-principal);
+  padding: 0 6px;
+  font-size: 0.9rem;
+}
+
+.campo {
+  margin-bottom: 12px;
+}
+
+.linha-dupla {
+  display: flex;
+  gap: 15px;
+}
+
+.linha-dupla .campo {
+  flex: 1;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+input:focus, select:focus {
+  border-color: var(--verde-principal);
+  outline: none;
+  box-shadow: 0 0 4px rgba(22, 163, 74, 0.4);
+}
+
+button {
+  background-color: var(--verde-principal);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: bold;
+  width: 100%;
+}
+
+button:hover {
+  background-color: var(--verde-escuro);
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+  nav, .painel-atalhos, .linha-dupla {
+    flex-direction: column;
+  }
+}
