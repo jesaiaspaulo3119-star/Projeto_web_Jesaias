@@ -1,4 +1,4 @@
-cliente= "José"
+funcionario= "José"
 salario= 2.500
 if salario >= 2.500:
     print("Acrescimo de 10%")
