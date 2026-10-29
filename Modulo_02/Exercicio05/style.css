@@ -138,11 +138,11 @@ th {
 }
 
 tbody tr:nth-child(even) {
-  background-color: #f8fafc;
+  background-color: #114781;
 }
 
 tbody tr:hover {
-  background-color: #f1f5f9;
+  background-color: #ec6b15;
 }
 
 tfoot td {
@@ -151,7 +151,7 @@ tfoot td {
 }
 
 .text-right {
-  text-align: right;
+  text-align:right;
 }
 
 /* ETIQUETAS DE STATUS (BADGES) */
