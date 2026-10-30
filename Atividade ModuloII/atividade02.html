@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratório de Programação Front-End - ETE José Joaquim da Silva Filho</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Estilização das barras de rolagem */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
+    /* BLOQUEIO ANTI-CÓPIA E SELEÇÃO DE TEXTO PARA APRENDIZAGEM ATIVA */
+    .no-select {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* Editor de Código (Digitação Permitida) */
+    .editor-textarea {
+      font-family: 'Fira Code', 'Consolas', 'Courier New', monospace;
+      tab-size: 2;
+      resize: none;
+      white-space: pre;
+      overflow-wrap: normal;
+      overflow-x: auto;
+    }
+
+    .line-numbers {
+      font-family: 'Fira Code', 'Consolas', 'Courier New', monospace;
+      user-select: none;
+    }
+
+    /* Molduras de Pré-visualização */
+    .preview-desktop {
+      width: 100%;
+      height: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .preview-mobile {
+      width: 375px;
+      height: 667px;
+      border: 12px solid #334155;
+      border-radius: 36px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+      margin: 15px auto;
+    }
+
+    /* Animação do Modal */
+    .modal-enter {
+      animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9) translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 h-screen flex flex-col overflow-hidden font-sans">
+
+  <!-- CABEÇALHO INSTITUCIONAL COM LOGO OFICIAL DA ETE -->
+  <header class="h-16 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-4 shrink-0 shadow-md">
+    <div class="flex items-center gap-3">
+      
+      <!-- LOGO VETORIAL OFICIAL DA ETE JOSÉ JOAQUIM DA SILVA FILHO -->
+      <div class="flex items-center gap-2 bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800 no-select">
+        <svg class="h-9 w-auto" viewBox="0 0 340 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Moldura Azul Marinho Principal com Cantos Arredondados -->
+          <rect x="10" y="10" width="320" height="130" rx="35" fill="#1D2B6C"/>
+          
+          <!-- Faixas Coloridas das Laterais (Bandeira de Pernambuco / ETE) -->
+          <!-- Esquerda -->
+          <rect x="10" y="35" width="28" height="18" fill="#FAD105"/>
+          <rect x="10" y="66" width="28" height="18" fill="#00994C"/>
+          <rect x="10" y="97" width="28" height="18" fill="#E31E24"/>
+          
+          <!-- Direita -->
+          <rect x="302" y="35" width="28" height="18" fill="#FAD105"/>
+          <rect x="302" y="66" width="28" height="18" fill="#00994C"/>
+          <rect x="302" y="97" width="28" height="18" fill="#E31E24"/>
+          
+          <!-- Sigla ETE Central -->
+          <text x="170" y="92" font-family="'Segoe UI', Arial, sans-serif" font-weight="900" font-size="62" fill="#FFFFFF" text-anchor="middle" letter-spacing="2">ETE</text>
+          
+          <!-- Subtítulo ESCOLA TÉCNICA ESTADUAL -->
+          <text x="170" y="122" font-family="'Segoe UI', Arial, sans-serif" font-weight="700" font-size="13" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">ESCOLA TÉCNICA ESTADUAL</text>
+          
+          <!-- Nome da Escola na Base -->
+          <text x="170" y="165" font-family="'Segoe UI', Arial, sans-serif" font-weight="800" font-size="15" fill="#FFFFFF" text-anchor="middle" letter-spacing="0.5">JOSÉ JOAQUIM DA SILVA FILHO</text>
+        </svg>
+
+        <div class="hidden sm:block border-l border-slate-700 pl-2.5">
+          <h1 class="font-bold text-xs text-slate-100 tracking-wide">Ambiente Prático de Aprendizagem Web</h1>
+          <p class="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
+            <i class="fa-solid fa-graduation-cap"></i> Alinhado à BNCC • EM13LTI05 / EM13MAT03
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BARRA DE PROGRESSO DO ALUNO -->
+    <div class="hidden lg:flex items-center gap-4 w-1/3 max-w-xs no-select">
+      <div class="w-full">
+        <div class="flex justify-between text-xs mb-1">
+          <span class="text-slate-400 font-medium">Progresso dos Desafios:</span>
+          <span id="courseProgressText" class="text-emerald-400 font-bold">0%</span>
+        </div>
+        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700">
+          <div id="courseProgressBar" class="bg-gradient-to-r from-emerald-500 to-sky-400 h-full w-0 transition-all duration-500"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTÕES DE AÇÃO DO ESTUDANTE -->
+    <div class="flex items-center gap-2">
+           
+      <button onclick="resetCurrentLessonCode()" class="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-md border border-slate-700 transition flex items-center gap-1.5" title="Restaurar código inicial">
+        <i class="fa-solid fa-rotate-left"></i>
+        <span class="hidden md:inline">Restaurar</span>
+      </button>
+
+      <button onclick="validateSolution()" class="px-4 py-1.5 text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-md shadow-lg shadow-emerald-900/40 transition flex items-center gap-1.5 active:scale-95">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>Executar & Validar</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- AMBIENTE DE TRABALHO INTERATIVO (IDE COM 3 PAINÉIS) -->
+  <div class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
+
+    <!-- PAINEL 1: ROTEIRO PEDAGÓGICO E INSTRUÇÕES (ESQUERDA - COM BLOQUEIO DE SELEÇÃO/CÓPIA) -->
+    <aside class="w-full md:w-80 lg:w-96 bg-slate-900 border-r border-slate-800 flex flex-col shrink-0 h-1/3 md:h-full border-b md:border-b-0 no-select" oncopy="preventCopyNotice(event)" oncontextmenu="return false;">
+      
+      <!-- Seletor do Desafio -->
+      <div class="p-3 bg-slate-900/90 border-b border-slate-800">
+        <label for="lessonSelect" class="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">Módulo do Desafio Técnico:</label>
+        <select id="lessonSelect" onchange="loadLesson(this.value)" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs rounded-lg p-2 focus:outline-none focus:border-emerald-500 cursor-pointer">
+          <!-- Opções preenchidas automaticamente pelo JavaScript -->
+        </select>
+      </div>
+
+      <!-- Conteúdo das Instruções com Rolagem -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-4 text-slate-300 text-xs leading-relaxed">
+        
+        <!-- Cabeçalho do Desafio -->
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span id="lessonBadge" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] px-2 py-0.5 rounded font-bold uppercase">Nível 1</span>
+            <span id="lessonModule" class="text-slate-400 text-[11px]">Farmácia Técnica</span>
+          </div>
+          <h2 id="lessonTitle" class="text-base font-bold text-slate-100">Carregando Desafio...</h2>
+        </div>
+
+        <!-- Alinhamento BNCC -->
+        <div class="bg-indigo-950/40 p-2.5 rounded-lg border border-indigo-800/50 flex items-start gap-2">
+          <i class="fa-solid fa-bookmark text-indigo-400 mt-0.5"></i>
+          <div>
+            <span class="text-[10px] font-bold uppercase text-indigo-300 block">Competência BNCC Computação:</span>
+            <p id="bnccSkillText" class="text-[11px] text-slate-300">Cultura Digital & Desenvolvimento de Sistemas</p>
+          </div>
+        </div>
+
+        <!-- Contexto Corporativo do Mercadinho/Farmácia -->
+        <div class="bg-slate-950/60 p-3 rounded-lg border border-slate-800/80">
+          <h3 class="font-bold text-slate-200 mb-1 flex items-center gap-2">
+            <i class="fa-solid fa-briefcase text-emerald-400"></i> Rotina do Profissional Front-End
+          </h3>
+          <p id="lessonContext" class="text-slate-400">Carregando cenário do projeto...</p>
+        </div>
+
+        <!-- Requisitos do Desafio -->
+        <div>
+          <h3 class="font-bold text-slate-200 mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-emerald-400"></i> Requisitos de Código (Pratique a Digitação):
+          </h3>
+          <ul id="lessonRequirements" class="space-y-2 text-slate-300">
+            <!-- Itens preenchidos via JS -->
+          </ul>
+        </div>
+
+        <!-- Caixa de Dicas Expansível (Com Bloqueio de Cópia) -->
+        <div class="border border-amber-500/30 bg-amber-500/5 rounded-lg overflow-hidden">
+          <button onclick="toggleHint()" class="w-full p-2.5 text-left text-amber-400 font-semibold flex items-center justify-between hover:bg-amber-500/10 transition">
+            <span class="flex items-center gap-2 text-xs">
+              <i class="fa-solid fa-lightbulb"></i> Dica do Professor (Sintaxe para Digitação)
+            </span>
+            <i id="hintChevron" class="fa-solid fa-chevron-down text-xs transition-transform duration-200"></i>
+          </button>
+          <div id="hintContent" class="hidden p-3 border-t border-amber-500/20 text-slate-300 bg-slate-950 font-mono text-[11px] overflow-x-auto whitespace-pre no-select">
+            <!-- Modelo de código de ajuda bloqueado contra cópia -->
+          </div>
+        </div>
+
+        <p class="text-[10px] text-amber-400/80 italic flex items-center gap-1">
+          <i class="fa-solid fa-lock text-[9px]"></i> Nota pedagógica: O painel de dicas está protegido contra cópia. Digite as instruções no editor ao lado para memorizar a sintaxe!
+        </p>
+
+      </div>
+
+      <!-- Rodapé de Navegação dos Desafios -->
+      <div class="p-3 bg-slate-900 border-t border-slate-800 flex justify-between gap-2 shrink-0">
+        <button id="btnPrev" onclick="navigateLesson(-1)" class="flex-1 py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded border border-slate-700 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-1">
+          <i class="fa-solid fa-arrow-left"></i> Anterior
+        </button>
+        <button id="btnNext" onclick="navigateLesson(1)" class="flex-1 py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs rounded border border-slate-700 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-1">
+          Próximo <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- PAINEL 2: EDITOR DE CÓDIGO (CENTRO) -->
+    <main class="flex-1 bg-slate-950 flex flex-col border-r border-slate-800 h-1/3 md:h-full">
+      
+      <!-- Abas dos Arquivos -->
+      <div class="bg-slate-900 border-b border-slate-800 flex items-center justify-between px-2 shrink-0">
+        <div class="flex items-center gap-1">
+          <button id="tabBtnHtml" onclick="switchTab('html')" class="px-4 py-2 text-xs font-mono font-medium flex items-center gap-2 border-b-2 border-emerald-400 text-emerald-400 bg-slate-950 transition">
+            <i class="fa-brands fa-html5 text-orange-500"></i> index.html
+          </button>
+          <button id="tabBtnCss" onclick="switchTab('css')" class="px-4 py-2 text-xs font-mono font-medium flex items-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition">
+            <i class="fa-brands fa-css3-alt text-blue-500"></i> style.css
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3 text-xs text-slate-400 pr-2">
+          <span class="flex items-center gap-1 text-[11px]"><i class="fa-solid fa-bolt text-amber-400"></i> Sincronia Automática</span>
+        </div>
+      </div>
+
+      <!-- Área de Edição de Código -->
+      <div class="flex-1 relative flex overflow-hidden bg-slate-950">
+        
+        <!-- Contador de Linhas -->
+        <div id="lineNumbers" class="line-numbers py-3 px-2 text-slate-600 bg-slate-900/50 text-right text-xs select-none border-r border-slate-800 shrink-0 w-10">
+          1
+        </div>
+
+        <!-- Editor HTML -->
+        <textarea id="htmlEditor" oninput="updateLineNumbers(); schedulePreviewUpdate();" onkeydown="handleTabKey(event)" class="editor-textarea flex-1 bg-transparent text-emerald-300 p-3 text-xs focus:outline-none leading-relaxed border-none" spellcheck="false" placeholder="Digite seu HTML aqui..."></textarea>
+
+        <!-- Editor CSS (Oculto por padrão) -->
+        <textarea id="cssEditor" oninput="updateLineNumbers(); schedulePreviewUpdate();" onkeydown="handleTabKey(event)" class="editor-textarea flex-1 bg-transparent text-sky-300 p-3 text-xs focus:outline-none leading-relaxed border-none hidden" spellcheck="false" placeholder="Digite seu CSS aqui..."></textarea>
+
+      </div>
+
+      <!-- Barra de Status Inferior do Editor -->
+      <div class="h-6 bg-slate-900 border-t border-slate-800 flex items-center justify-between px-3 text-[10px] text-slate-400 shrink-0">
+        <span id="editorCursorPos">Linha 1, Coluna 1</span>
+        <span>HTML5 & CSS3 Puro • UTF-8</span>
+      </div>
+
+    </main>
+
+    <!-- PAINEL 3: LIVE PREVIEW & FEEDBACK (DIREITA) -->
+    <section class="w-full md:w-1/2 lg:w-5/12 bg-slate-900 flex flex-col h-1/3 md:h-full">
+      
+      <!-- Barra de Ferramentas da Visualização -->
+      <div class="h-9 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-3 shrink-0">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="text-xs font-semibold text-slate-300">Visualização em Tempo Real (Live Preview)</span>
+        </div>
+
+        <!-- Alternador Desktop / Celular -->
+        <div class="flex items-center bg-slate-950 rounded border border-slate-800 p-0.5">
+          <button id="btnDeviceDesktop" onclick="setDeviceView('desktop')" class="px-2 py-0.5 text-xs text-emerald-400 bg-slate-800 rounded transition" title="Modo Computador">
+            <i class="fa-solid fa-desktop"></i>
+          </button>
+          <button id="btnDeviceMobile" onclick="setDeviceView('mobile')" class="px-2 py-0.5 text-xs text-slate-400 hover:text-slate-200 transition" title="Modo Smartphone">
+            <i class="fa-solid fa-mobile-screen-button"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Container do iframe com Sandbox -->
+      <div class="flex-1 bg-slate-950 p-2 flex items-center justify-center overflow-auto relative">
+        <div id="previewFrameWrapper" class="preview-desktop bg-white rounded overflow-hidden shadow-2xl relative">
+          <iframe id="previewIframe" class="w-full h-full border-none"></iframe>
+        </div>
+      </div>
+
+      <!-- Console de Validação / Mensagens de Diagnóstico -->
+      <div class="h-20 bg-slate-950 border-t border-slate-800 p-2 text-xs font-mono overflow-y-auto shrink-0">
+        <div class="text-[10px] text-slate-500 uppercase font-bold mb-1 flex items-center justify-between">
+          <span><i class="fa-solid fa-terminal mr-1"></i> Console de Validação:</span>
+          <span id="validationStatusTag" class="text-amber-400">Aguardando Teste</span>
+        </div>
+        <p id="consoleOutputText" class="text-slate-400 text-[11px]">Clique no botão "Executar & Validar" para testar seu código contra os requisitos da BNCC.</p>
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- MODAL DE SUCESSO / CONCLUÍDO -->
+  <div id="successModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden">
+    <div class="bg-slate-900 border border-slate-800 rounded-xl max-w-md w-full p-6 shadow-2xl modal-enter relative text-center">
+      
+      <div class="w-16 h-16 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+        <i class="fa-solid fa-award"></i>
+      </div>
+
+      <h3 class="text-lg font-bold text-slate-100 mb-1">Desafio Aprovado com Sucesso!</h3>
+      <p id="modalLessonTitle" class="text-xs text-emerald-400 font-medium mb-3">Nível Completo</p>
+      
+      <p id="modalFeedbackText" class="text-xs text-slate-300 leading-relaxed mb-6">
+        Parabéns! Você estruturou os elementos técnicos do projeto de acordo com os padrões exigidos.
+      </p>
+
+      <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 mb-6">
+        <div class="flex justify-between text-xs text-slate-400 mb-1">
+          <span>Progresso no Curso Técnico:</span>
+          <span id="modalProgressPct" class="font-bold text-emerald-400">20%</span>
+        </div>
+        <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+          <div id="modalProgressBar" class="bg-emerald-500 h-full w-0 transition-all duration-500"></div>
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <button onclick="closeModal()" class="flex-1 py-2 px-4 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-lg border border-slate-700 transition">
+          Revisar Código
+        </button>
+        <button onclick="nextLessonFromModal()" class="flex-1 py-2 px-4 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg shadow-lg shadow-emerald-900/40 transition">
+          Próximo Desafio <i class="fa-solid fa-arrow-right ml-1"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT PRINCIPAL DA APLICAÇÃO -->
+  <script>
+    /* =========================================================================
+       AVISO DE BLOQUEIO DE CÓPIA
+       ========================================================================= */
+    function preventCopyNotice(e) {
+      e.preventDefault();
+      const consoleText = document.getElementById('consoleOutputText');
+      const statusTag = document.getElementById('validationStatusTag');
+      
+      statusTag.className = 'text-amber-400 font-bold';
+      statusTag.textContent = '🔒 Proteção Ativa';
+      consoleText.className = 'text-amber-300 text-[11px] font-semibold';
+      consoleText.textContent = '[APRENDIZAGEM ATIVA] A cópia direta de código de dica foi desativada para este exercício. Digite as tags e atributos manualmente no editor de código!';
+    }
+
+    /* =========================================================================
+       BANCO DE DADOS DE DESAFIOS PEDAGÓGICOS (5 NÍVEIS PROGRESSIVOS DE FARMÁCIA)
+       ========================================================================= */
+    const lessons = [
+      {
+        id: "desafio_1",
+        level: "Desafio 1",
+        module: "Estruturação HTML5 Semântica",
+        title: "Cabeçalho Oficial da Farmácia Técnica",
+        bncc: "EM13LTI05 - Utilização de linguagens digitais e semântica web",
+        context: "Você assumiu o sistema da Drogaria Popular ETE. Sua primeira tarefa corporativa é estruturar o cabeçalho oficial do site usando apenas tags semânticas do HTML5.",
+        requirements: [
+          "Crie a estrutura com o elemento semântico <code>&lt;header&gt;</code>.",
+          "Insira o título principal <code>&lt;h1&gt;</code> com o texto exato: <code>Drogaria Popular ETE</code>.",
+          "Crie um menu de navegação <code>&lt;nav&gt;</code> com dois links (<code>&lt;a&gt;</code>): <code>Estoque</code> e <code>Receitas</code>."
+        ],
+        hint: `<header>\n  <h1>Drogaria Popular ETE</h1>\n  <nav>\n    <a href="#estoque">Estoque</a>\n    <a href="#receitas">Receitas</a>\n  </nav>\n</header>`,
+        initialHtml: `<!-- Escreva o cabeçalho semântico abaixo -->\n`,
+        initialCss: `/* Estilos do Cabeçalho da Farmácia */\nheader {\n  background-color: #0284c7;\n  color: white;\n  padding: 15px;\n  text-align: center;\n}\n\nnav a {\n  color: white;\n  margin: 0 10px;\n  text-decoration: none;\n  font-weight: bold;\n}`,
+        validate: (html, css) => {
+          const hasHeader = /<header[\s\S]*?>[\s\S]*?<\/header>/i.test(html);
+          const hasH1 = /<h1>[\s\S]*?Drogaria Popular ETE[\s\S]*?<\/h1>/i.test(html);
+          const hasNav = /<nav[\s\S]*?>[\s\S]*?<\/nav>/i.test(html);
+          const hasLinks = (html.match(/<a[\s\S]*?>/gi) || []).length >= 2;
+          return hasHeader && hasH1 && hasNav && hasLinks;
+        }
+      },
+      {
+        id: "desafio_2",
+        level: "Desafio 2",
+        module: "Tabelas de Estoque & Acessibilidade",
+        title: "Tabela de Medicamentos & Preços",
+        bncc: "EM13MAT03 - Organização e estruturação de dados em matrizes e tabelas",
+        context: "O setor de logística da drogaria exige a listagem dos medicamentos em estoque organizados semanticamente com as áreas de cabeçalho, corpo e rodapé.",
+        requirements: [
+          "Crie uma tabela utilizando a tag <code>&lt;table&gt;</code>.",
+          "Crie o cabeçalho com <code>&lt;thead&gt;</code> contendo as colunas 'Medicamento' e 'Preço' em tags <code>&lt;th&gt;</code>.",
+          "Crie o corpo com <code>&lt;tbody&gt;</code> contendo 2 produtos em tags <code>&lt;td&gt;</code> (Exemplo: Paracetamol e Amoxicilina)."
+        ],
+        hint: `<table>\n  <thead>\n    <tr>\n      <th>Medicamento</th>\n      <th>Preço</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td>Paracetamol 500mg</td>\n      <td>R$ 8,50</td>\n    </tr>\n    <tr>\n      <td>Amoxicilina 500mg</td>\n      <td>R$ 22,00</td>\n    </tr>\n  </tbody>\n</table>`,
+        initialHtml: `<!-- Crie a tabela de estoque abaixo -->\n`,
+        initialCss: `table {\n  width: 100%;\n  border-collapse: collapse;\n}\n\nth, td {\n  border: 1px solid #cbd5e1;\n  padding: 8px;\n  text-align: left;\n}\n\nth {\n  background-color: #0284c7;\n  color: white;\n}`,
+        validate: (html, css) => {
+          const hasTable = html.includes("<table") && html.includes("</table>");
+          const hasThead = html.includes("<thead") && html.includes("</thead>");
+          const hasTbody = html.includes("<tbody") && html.includes("</tbody>");
+          const hasTh = (html.match(/<th[\s\S]*?>/gi) || []).length >= 2;
+          const hasRows = (html.match(/<tr[\s\S]*?>/gi) || []).length >= 3;
+          return hasTable && hasThead && hasTbody && hasTh && hasRows;
+        }
+      },
+      {
+        id: "desafio_3",
+        level: "Desafio 3",
+        module: "Formulários Nativos & Validação",
+        title: "Cadastro de Medicamento & Receita",
+        bncc: "EM13LTI05 - Validação de entradas de dados e experiência de usuário",
+        context: "Monte o formulário corporativo para o atendente cadastrar um novo remédio no sistema, exigindo agrupamento semântico e preenchimento obrigatório.",
+        requirements: [
+          "Crie um formulário com a tag <code>&lt;form&gt;</code>.",
+          "Agrupe os campos com <code>&lt;fieldset&gt;</code> e dê o título 'Dados do Medicamento' com a tag <code>&lt;legend&gt;</code>.",
+          "Adicione um campo para o Nome com o atributo <code>required</code> e um campo para a Data de Validade com <code>type=\"date\"</code>."
+        ],
+        hint: `<form>\n  <fieldset>\n    <legend>Dados do Medicamento</legend>\n    <label>Nome:</label>\n    <input type="text" required>\n    <label>Validade:</label>\n    <input type="date" required>\n  </fieldset>\n  <button type="submit">Cadastrar</button>\n</form>`,
+        initialHtml: `<!-- Desenvolva o formulário abaixo -->\n`,
+        initialCss: `fieldset {\n  border: 1px solid #0284c7;\n  padding: 15px;\n  border-radius: 6px;\n}\n\nlegend {\n  font-weight: bold;\n  color: #0284c7;\n}\n\ninput {\n  display: block;\n  margin-bottom: 10px;\n  width: 100%;\n  padding: 6px;\n}`,
+        validate: (html, css) => {
+          const hasForm = html.includes("<form") && html.includes("</form>");
+          const hasFieldset = html.includes("<fieldset") && html.includes("</fieldset>");
+          const hasLegend = html.includes("<legend") && html.includes("</legend>");
+          const hasRequired = html.includes("required");
+          const hasDate = html.includes('type="date"') || html.includes("type='date'");
+          return hasForm && hasFieldset && hasLegend && hasRequired && hasDate;
+        }
+      },
+      {
+        id: "desafio_4",
+        level: "Desafio 4",
+        module: "Estilização Avançada CSS3",
+        title: "Tabela Zebrada & Badges de Alerta",
+        cat: "CSS3",
+        bncc: "EM13LTI05 - Design de interfaces e hierarquia visual",
+        context: "Melhore a leitura visual da tabela de remédios aplicando o efeito zebrado CSS e etiquetando medicamentos controlados.",
+        requirements: [
+          "Aplique a pseudo-classe <code>nth-child(even)</code> nas linhas da tabela para alternar a cor de fundo.",
+          "Crie a classe CSS <code>.badge-alerta</code> com cor de fundo vermelha e cantos arredondados (<code>border-radius</code>).",
+          "Aplique a classe <code>badge-alerta</code> em um elemento <code>&lt;span&gt;</code> no HTML."
+        ],
+        hint: `/* No arquivo style.css */\ntbody tr:nth-child(even) {\n  background-color: #f1f5f9;\n}\n\n.badge-alerta {\n  background-color: #ef4444;\n  color: white;\n  padding: 4px 8px;\n  border-radius: 12px;\n}`,
+        initialHtml: `<table>\n  <tbody>\n    <tr>\n      <td>Dipirona 500mg</td>\n      <td>Livre</td>\n    </tr>\n    <tr>\n      <td>Clonazepam 2mg</td>\n      <td><span class="badge-alerta">Receita Controlada</span></td>\n    </tr>\n  </tbody>\n</table>`,
+        initialCss: `/* Escreva o CSS da tabela zebrada e badge abaixo */\n`,
+        validate: (html, css) => {
+          const hasNthChild = css.includes("nth-child(even)") || css.includes("nth-child(2n)");
+          const hasBadgeClass = css.includes(".badge-alerta");
+          const hasBorderRadius = css.includes("border-radius");
+          const hasHtmlBadge = html.includes("badge-alerta");
+          return hasNthChild && hasBadgeClass && hasBorderRadius && hasHtmlBadge;
+        }
+      },
+      {
+        id: "desafio_5",
+        level: "Desafio 5",
+        module: "Layout Flexbox & Responsividade",
+        title: "Vitrine Flexbox de Promoções da Farmácia",
+        bncc: "EM13LTI05 - Layouts fluidos e adaptação para dispositivos móveis",
+        context: "Crie uma vitrine de remédios em promoção organizada em cartões flexíveis com CSS Flexbox que se adaptam a computadores e celulares.",
+        requirements: [
+          "Configure a classe <code>.vitrine</code> no CSS com <code>display: flex</code>, <code>gap: 15px</code> e <code>flex-wrap: wrap</code>.",
+          "Crie pelo menos 2 elementos no HTML com a classe <code>card-remedio</code> dentro da vitrine.",
+          "Adicione uma regra de mídia <code>@media (max-width: 600px)</code> no CSS para responsividade."
+        ],
+        hint: `/* No arquivo style.css */\n.vitrine {\n  display: flex;\n  gap: 15px;\n  flex-wrap: wrap;\n}\n\n.card-remedio {\n  border: 1px solid #0284c7;\n  padding: 10px;\n  flex: 1;\n}\n\n@media (max-width: 600px) {\n  .vitrine { flex-direction: column; }\n}`,
+        initialHtml: `<div class="vitrine">\n  <div class="card-remedio">\n    <h3>Vitaminas C 1g</h3>\n    <p>R$ 12,00</p>\n  </div>\n  <div class="card-remedio">\n    <h3>Omeprazol 20mg</h3>\n    <p>R$ 18,50</p>\n  </div>\n</div>`,
+        initialCss: `/* Crie o layout Flexbox e a media query abaixo */\n`,
+        validate: (html, css) => {
+          const hasFlex = css.includes("display: flex") || css.includes("display:flex");
+          const hasWrap = css.includes("flex-wrap: wrap") || css.includes("flex-wrap:wrap");
+          const hasGap = css.includes("gap:");
+          const hasMedia = css.includes("@media");
+          const hasCards = (html.match(/class="card-remedio"/gi) || []).length >= 2;
+          return hasFlex && hasWrap && hasGap && hasMedia && hasCards;
+        }
+      }
+    ];
+
+    /* =========================================================================
+       VARIÁVEIS DE ESTADO
+       ========================================================================= */
+    let currentLessonIndex = 0;
+    let completedLessons = new Set();
+    let currentTab = 'html';
+    let previewUpdateTimer = null;
+
+    /* =========================================================================
+       INICIALIZAÇÃO DA PÁGINA
+       ========================================================================= */
+    window.onload = () => {
+      populateLessonDropdown();
+      loadSavedProgress();
+      loadLesson(0);
+      setupCursorListener();
+    };
+
+    function populateLessonDropdown() {
+      const select = document.getElementById('lessonSelect');
+      select.innerHTML = '';
+      lessons.forEach((lesson, index) => {
+        const opt = document.createElement('option');
+        opt.value = index;
+        opt.textContent = `${lesson.level}: ${lesson.title}`;
+        select.appendChild(opt);
+      });
+    }
+
+    /* =========================================================================
+       CARREGAMENTO E NAVEGAÇÃO DOS DESAFIOS
+       ========================================================================= */
+    function loadLesson(index) {
+      currentLessonIndex = parseInt(index);
+      const lesson = lessons[currentLessonIndex];
+
+      // Atualiza os cabeçalhos das instruções
+      document.getElementById('lessonSelect').value = currentLessonIndex;
+      document.getElementById('lessonBadge').textContent = lesson.level;
+      document.getElementById('lessonModule').textContent = `Módulo: ${lesson.module}`;
+      document.getElementById('lessonTitle').textContent = lesson.title;
+      document.getElementById('bnccSkillText').textContent = lesson.bncc;
+      document.getElementById('lessonContext').textContent = lesson.context;
+
+      // Preenche os requisitos
+      const reqList = document.getElementById('lessonRequirements');
+      reqList.innerHTML = '';
+      lesson.requirements.forEach(req => {
+        const li = document.createElement('li');
+        li.className = 'flex items-start gap-2 text-xs';
+        li.innerHTML = `<i class="fa-solid fa-angle-right text-emerald-400 mt-0.5"></i> <span>${req}</span>`;
+        reqList.appendChild(li);
+      });
+
+      // Preenche a dica
+      document.getElementById('hintContent').textContent = lesson.hint;
+      document.getElementById('hintContent').classList.add('hidden');
+      document.getElementById('hintChevron').style.transform = 'rotate(0deg)';
+
+      // Define os códigos iniciais
+      document.getElementById('htmlEditor').value = lesson.initialHtml;
+      document.getElementById('cssEditor').value = lesson.initialCss;
+
+      // Atualiza estado dos botões
+      document.getElementById('btnPrev').disabled = currentLessonIndex === 0;
+      document.getElementById('btnNext').disabled = currentLessonIndex === lessons.length - 1;
+
+      // Atualiza o console
+      document.getElementById('validationStatusTag').className = 'text-amber-400';
+      document.getElementById('validationStatusTag').textContent = 'Aguardando Teste';
+      document.getElementById('consoleOutputText').textContent = 'Clique no botão "Executar & Validar" para testar seu código contra os requisitos da BNCC.';
+
+      updateLineNumbers();
+      renderLivePreview();
+    }
+
+    function navigateLesson(dir) {
+      const newIndex = currentLessonIndex + dir;
+      if (newIndex >= 0 && newIndex < lessons.length) {
+        loadLesson(newIndex);
+      }
+    }
+
+    function resetCurrentLessonCode() {
+      if (confirm('Deseja restaurar o código inicial deste desafio? Suas alterações não salvas neste exercício serão perdidas.')) {
+        const lesson = lessons[currentLessonIndex];
+        document.getElementById('htmlEditor').value = lesson.initialHtml;
+        document.getElementById('cssEditor').value = lesson.initialCss;
+        updateLineNumbers();
+        renderLivePreview();
+      }
+    }
+
+    /* =========================================================================
+       GERENCIAMENTO DO EDITOR & ABAS
+       ========================================================================= */
+    function switchTab(tab) {
+      currentTab = tab;
+      const htmlBtn = document.getElementById('tabBtnHtml');
+      const cssBtn = document.getElementById('tabBtnCss');
+      const htmlEditor = document.getElementById('htmlEditor');
+      const cssEditor = document.getElementById('cssEditor');
+
+      if (tab === 'html') {
+        htmlBtn.className = 'px-4 py-2 text-xs font-mono font-medium flex items-center gap-2 border-b-2 border-emerald-400 text-emerald-400 bg-slate-950 transition';
+        cssBtn.className = 'px-4 py-2 text-xs font-mono font-medium flex items-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition';
+        htmlEditor.classList.remove('hidden');
+        cssEditor.classList.add('hidden');
+      } else {
+        cssBtn.className = 'px-4 py-2 text-xs font-mono font-medium flex items-center gap-2 border-b-2 border-emerald-400 text-emerald-400 bg-slate-950 transition';
+        htmlBtn.className = 'px-4 py-2 text-xs font-mono font-medium flex items-center gap-2 border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition';
+        cssEditor.classList.remove('hidden');
+        htmlEditor.classList.add('hidden');
+      }
+      updateLineNumbers();
+    }
+
+    function updateLineNumbers() {
+      const activeEditor = currentTab === 'html' ? document.getElementById('htmlEditor') : document.getElementById('cssEditor');
+      const lines = activeEditor.value.split('\n').length;
+      const lineNumbersDiv = document.getElementById('lineNumbers');
+      
+      let linesHtml = '';
+      for (let i = 1; i <= Math.max(lines, 1); i++) {
+        linesHtml += `${i}<br>`;
+      }
+      lineNumbersDiv.innerHTML = linesHtml;
+    }
+
+    function handleTabKey(e) {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const editor = e.target;
+        const start = editor.selectionStart;
+        const end = editor.selectionEnd;
+        editor.value = editor.value.substring(0, start) + '  ' + editor.value.substring(end);
+        editor.selectionStart = editor.selectionEnd = start + 2;
+        updateLineNumbers();
+        schedulePreviewUpdate();
+      }
+    }
+
+    function setupCursorListener() {
+      const updateCursor = (e) => {
+        const editor = e.target;
+        const text = editor.value.substring(0, editor.selectionStart);
+        const lines = text.split('\n');
+        const line = lines.length;
+        const col = lines[lines.length - 1].length + 1;
+        document.getElementById('editorCursorPos').textContent = `Linha ${line}, Coluna ${col}`;
+      };
+
+      document.getElementById('htmlEditor').addEventListener('keyup', updateCursor);
+      document.getElementById('htmlEditor').addEventListener('click', updateCursor);
+      document.getElementById('cssEditor').addEventListener('keyup', updateCursor);
+      document.getElementById('cssEditor').addEventListener('click', updateCursor);
+    }
+
+    /* =========================================================================
+       LIVE PREVIEW RENDERER
+       ========================================================================= */
+    function schedulePreviewUpdate() {
+      clearTimeout(previewUpdateTimer);
+      previewUpdateTimer = setTimeout(renderLivePreview, 300);
+    }
+
+    function renderLivePreview() {
+      const htmlCode = document.getElementById('htmlEditor').value;
+      const cssCode = document.getElementById('cssEditor').value;
+      const iframe = document.getElementById('previewIframe');
+
+      const fullDocument = `
+        <!DOCTYPE html>
+        <html lang="pt-BR">
+        <head>
+          <meta charset="UTF-8">
+          <style>
+            body { font-family: system-ui, -apple-system, sans-serif; padding: 15px; margin: 0; color: #1e293b; }
+            ${cssCode}
+          </style>
+        </head>
+        <body>
+          ${htmlCode}
+        </body>
+        </html>
+      `;
+
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      doc.open();
+      doc.write(fullDocument);
+      doc.close();
+    }
+
+    function setDeviceView(mode) {
+      const wrapper = document.getElementById('previewFrameWrapper');
+      const btnDesktop = document.getElementById('btnDeviceDesktop');
+      const btnMobile = document.getElementById('btnDeviceMobile');
+
+      if (mode === 'desktop') {
+        wrapper.className = 'preview-desktop bg-white rounded overflow-hidden shadow-2xl relative';
+        btnDesktop.className = 'px-2 py-0.5 text-xs text-emerald-400 bg-slate-800 rounded transition';
+        btnMobile.className = 'px-2 py-0.5 text-xs text-slate-400 hover:text-slate-200 transition';
+      } else {
+        wrapper.className = 'preview-mobile bg-white rounded overflow-hidden shadow-2xl relative';
+        btnMobile.className = 'px-2 py-0.5 text-xs text-emerald-400 bg-slate-800 rounded transition';
+        btnDesktop.className = 'px-2 py-0.5 text-xs text-slate-400 hover:text-slate-200 transition';
+      }
+    }
+
+    /* =========================================================================
+       VALIDADOR AUTOMÁTICO & PROGRESSO LOCAL
+       ========================================================================= */
+    function validateSolution() {
+      const htmlCode = document.getElementById('htmlEditor').value;
+      const cssCode = document.getElementById('cssEditor').value;
+      const lesson = lessons[currentLessonIndex];
+
+      const isValid = lesson.validate(htmlCode, cssCode);
+
+      const statusTag = document.getElementById('validationStatusTag');
+      const consoleText = document.getElementById('consoleOutputText');
+
+      if (isValid) {
+        statusTag.className = 'text-emerald-400 font-bold';
+        statusTag.textContent = '✅ Aprovado!';
+        consoleText.className = 'text-emerald-300 text-[11px] font-semibold';
+        consoleText.textContent = `[SUCESSO] Excelente! Seu código cumpriu todos os requisitos técnicos do ${lesson.level}.`;
+
+        completedLessons.add(lesson.id);
+        saveProgress();
+        updateOverallProgress();
+        showSuccessModal();
+      } else {
+        statusTag.className = 'text-rose-400 font-bold';
+        statusTag.textContent = '❌ Requisitos Incompletos';
+        consoleText.className = 'text-rose-300 text-[11px]';
+        consoleText.textContent = '[ATENÇÃO] O código digitado ainda não atende a todos os requisitos solicitados. Revise o código no editor e consulte a "Dica do Professor".';
+      }
+    }
+
+    function updateOverallProgress() {
+      const pct = Math.round((completedLessons.size / lessons.length) * 100);
+      document.getElementById('courseProgressBar').style.width = pct + '%';
+      document.getElementById('courseProgressText').textContent = pct + '%';
+      document.getElementById('modalProgressPct').textContent = pct + '%';
+      document.getElementById('modalProgressBar').style.width = pct + '%';
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem('ete_lab_progress', JSON.stringify(Array.from(completedLessons)));
+      } catch (e) {
+        console.log('LocalStorage indisponível.');
+      }
+    }
+
+    function loadSavedProgress() {
+      try {
+        const saved = localStorage.getItem('ete_lab_progress');
+        if (saved) {
+          completedLessons = new Set(JSON.parse(saved));
+          updateOverallProgress();
+        }
+      } catch (e) {}
+    }
+
+    function toggleHint() {
+      const hint = document.getElementById('hintContent');
+      const chevron = document.getElementById('hintChevron');
+      if (hint.classList.contains('hidden')) {
+        hint.classList.remove('hidden');
+        chevron.style.transform = 'rotate(180deg)';
+      } else {
+        hint.classList.add('hidden');
+        chevron.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    /* =========================================================================
+       EXPORTAR CÓDIGO DO ALUNO (.HTML)
+       ========================================================================= */
+    function exportStudentCode() {
+      const htmlCode = document.getElementById('htmlEditor').value;
+      const cssCode = document.getElementById('cssEditor').value;
+      
+      const fullContent = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trabalho ETE - ${lessons[currentLessonIndex].title}</title>
+  <style>
+    /* Estilos desenvolvidos na ETE José Joaquim da Silva Filho */
+    ${cssCode}
+  </style>
+</head>
+<body>
+  <!-- Estrutura HTML desenvolvida pelo estudante -->
+  ${htmlCode}
+</body>
+</html>`;
+
+      const blob = new Blob([fullContent], { type: 'text/html;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `ETE_Trabalho_${lessons[currentLessonIndex].id}.html`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    /* =========================================================================
+       MODAL DE RECOMPENSA E AVANÇO
+       ========================================================================= */
+    function showSuccessModal() {
+      const lesson = lessons[currentLessonIndex];
+      document.getElementById('modalLessonTitle').textContent = `${lesson.level}: ${lesson.title}`;
+      document.getElementById('successModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('successModal').classList.add('hidden');
+    }
+
+    function nextLessonFromModal() {
+      closeModal();
+      if (currentLessonIndex < lessons.length - 1) {
+        navigateLesson(1);
+      } else {
+        alert('🎉 PARABÉNS! Você concluiu todos os Desafios Técnicos de Front-End da ETE José Joaquim da Silva Filho!');
+      }
+    }
+  </script>
+</body>
+</html>
