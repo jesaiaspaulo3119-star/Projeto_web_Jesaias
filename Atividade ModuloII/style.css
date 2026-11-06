@@ -43,24 +43,24 @@ input {
   width: 100%;
   padding: 6px;
 }
-/* Escreva o CSS da tabela zebrada e badge abaixo */
-tbody tr:nth-child(even) {
+
+tbody tr:nth-child(even){
   backgroud-color: #f1f5f9;
 }
 .badge-alerta {
-  bacground-color: #ef4444;
-  color: white;
-  padding: 4px 8px;
-  border-radius:12px;
+background-color: #861f0d;
+color: white;
+padding: 4px 8px;
+border-radius:12px;
 }
-/* Crie o layout Flexbox e a media query abaixo */
+
 .vitrine {
   display: flex;
   gap:15px;
   flex-wrap: wrap;
 }
 .card-remedio {
-  bonder: 1px solid #0284c7;
+  border: 1px solid #0284c7;
   padding: 10px;
   flex: 1;
 }
