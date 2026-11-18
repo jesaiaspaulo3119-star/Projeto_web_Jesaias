@@ -1,6 +1,6 @@
-'''sistem de uma Escola'''
+'''Um sistema de uma Escola'''
 senha =""
 while senha != "1234":
     senha=str(input("Digite a senha: "))
-    print("Acesso Permito!")
+    print("Acesso Permitido!")
     
